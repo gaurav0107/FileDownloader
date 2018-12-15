@@ -1,7 +1,7 @@
 package io.gauravdubey.FileDownloader.workers;
 
 import io.gauravdubey.FileDownloader.config.Constants;
-import java.net.URL;
+import io.gauravdubey.FileDownloader.model.DownloadFile;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,20 @@ public class DownloadManager {
         return mDownloadList;
     }
 
-    public Downloader createDownload(URL verifiedURL, String outputFolder) {
-        return null;
+    public Downloader createDownload(DownloadFile downloadFile) {
+        Downloader fd = null;
+        switch (downloadFile.getProtocol()){
+            case Constants.HTTP:
+                fd = new HttpDownloader(downloadFile);
+                break;
+            case Constants.FTP:
+                fd = new FtpDownloader(downloadFile);
+                break;
+            case Constants.SFTP:
+                fd = new SftpDownloader(downloadFile);
+                break;
+        }
+        mDownloadList.add(fd);
+        return fd;
     }
 }

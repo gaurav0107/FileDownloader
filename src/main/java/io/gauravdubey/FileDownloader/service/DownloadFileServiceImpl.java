@@ -5,6 +5,7 @@ import io.gauravdubey.FileDownloader.model.DownloadFile;
 import io.gauravdubey.FileDownloader.model.DownloadFileRequest;
 import io.gauravdubey.FileDownloader.model.DownloadFileResposne;
 import io.gauravdubey.FileDownloader.model.DownloadRepository;
+import io.gauravdubey.FileDownloader.workers.DownloadManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,15 +22,16 @@ public class DownloadFileServiceImpl implements DownloadFileService {
 
     @Override
     public DownloadFileResposne create(DownloadFileRequest downloadFileRequest) {
-        DownloadFile downloadFile = new DownloadFile();
-        downloadFile.setSource(downloadFileRequest.getSource());
-        downloadFile.setRequestTime(downloadFileRequest.getRequestTime());
+        DownloadFile downloadFile = new DownloadFile(downloadFileRequest.getSource());
         downloadFile = downloadRepository.save(downloadFile);
 
         DownloadFileResposne downloadFileResponse = new DownloadFileResposne();
         downloadFileResponse.setId(downloadFile.getId());
         downloadFileResponse.setSource(downloadFile.getSource());
         downloadFileResponse.setRequestTime(downloadFile.getRequestTime());
+
+        DownloadManager.getInstance().createDownload(downloadFile);
+
         return downloadFileResponse;
     }
 

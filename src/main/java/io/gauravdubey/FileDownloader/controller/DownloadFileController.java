@@ -9,6 +9,7 @@ import io.gauravdubey.FileDownloader.model.*;
 import io.gauravdubey.FileDownloader.service.DownloadFileService;
 
 
+import io.gauravdubey.FileDownloader.workers.DownloadManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
