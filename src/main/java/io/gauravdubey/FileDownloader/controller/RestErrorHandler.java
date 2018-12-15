@@ -16,6 +16,6 @@ public class RestErrorHandler {
     @ExceptionHandler(DownloadFileNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void handleDownloadFileNotFound(DownloadFileNotFoundException ex) {
-        LOGGER.debug("handling 404 error on a todo entry");
+        LOGGER.debug("handling 404 error on entry");
     }
 }

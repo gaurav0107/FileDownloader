@@ -21,7 +21,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.swing.text.html.Option;
 import java.net.URI;
 import java.util.Optional;
 
@@ -48,7 +47,7 @@ public class DownloadFileController {
 
 
     @InitBinder
-    protected void initBinder(WebDataBinder webDataBinder) {
+    protected void initBinder(WebDataBinder webDataBinder){
         webDataBinder.setValidator(downloadRequestValidator);
     }
 
