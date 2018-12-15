@@ -14,11 +14,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class HttpDownloader extends Downloader {
+public class HttpsDownloader extends Downloader {
 
     private static final Logger logger = LoggerFactory.getLogger(RestErrorHandler.class);
 
-    protected HttpDownloader(DownloadFile downloadFile) {
+    protected HttpsDownloader(DownloadFile downloadFile) {
         super(downloadFile);
         download();
     }
@@ -32,15 +32,19 @@ public class HttpDownloader extends Downloader {
     public void run() {
         HttpURLConnection conn = null;
         try {
-            conn = (HttpURLConnection)new URL(this.mDownloadFile.getSource()).openConnection();
+            conn = (HttpsURLConnection)new URL(this.mDownloadFile.getSource()).openConnection();
             conn.setConnectTimeout(Constants.HTTP_CONN_TIMEOUT);
             conn.connect();
 
             if (conn.getResponseCode() / 100 != 2) {
                 error();
             }
+            logger.info("status code" + conn.getHeaderField("Content-Length"));
+            logger.info("status" + conn.getResponseMessage());
 
-            int contentLength = conn.getContentLength();
+
+            long contentLength = conn.getContentLength();
+            contentLength = Long.parseLong(conn.getHeaderField("Content-Length"));
             if (contentLength < 1) {
                 error();
             }
@@ -66,19 +70,19 @@ public class HttpDownloader extends Downloader {
                         int startByte = 0;
                         int endByte = partSize - 1;
 
-                        HttpDownloadThread aThread = new HttpDownloadThread(1, mDownloadFile,
+                        HttpsDownloadThread aThread = new HttpsDownloadThread(1, mDownloadFile,
                                 startByte, endByte);
                         mListDownloadThread.add(aThread);
                         int i = 2;
                         while (endByte < mDownloadFile.getFileSize()) {
                             startByte = endByte + 1;
                             endByte += partSize;
-                            aThread = new HttpDownloadThread(i, mDownloadFile, startByte, endByte);
+                            aThread = new HttpsDownloadThread(i, mDownloadFile, startByte, endByte);
                             mListDownloadThread.add(aThread);
                             ++i;
                         }
                     }else {
-                        HttpDownloadThread aThread = new HttpDownloadThread(1, mDownloadFile,
+                        HttpsDownloadThread aThread = new HttpsDownloadThread(1, mDownloadFile,
                                 0, mDownloadFile.getFileSize());
                         mListDownloadThread.add(aThread);
                     }
@@ -114,7 +118,7 @@ public class HttpDownloader extends Downloader {
     }
 
 
-    private class HttpDownloadThread extends DownloadThread {
+    private class HttpsDownloadThread extends DownloadThread {
 
         /**
          * Constructor
@@ -123,7 +127,7 @@ public class HttpDownloader extends Downloader {
          * @param startByte
          * @param endByte
          */
-        public HttpDownloadThread(int threadID, DownloadFile downloadFile, long startByte, long endByte) {
+        public HttpsDownloadThread(int threadID, DownloadFile downloadFile, long startByte,  long endByte) {
             super(threadID, downloadFile, startByte, endByte);
         }
 
@@ -134,7 +138,7 @@ public class HttpDownloader extends Downloader {
 
             try {
                 // open Http connection to URL
-                HttpURLConnection conn = (HttpURLConnection) new URL(mDownloadFile.getSource()).openConnection();
+                HttpURLConnection conn = (HttpsURLConnection) new URL(mDownloadFile.getSource()).openConnection();
 
                 // set the range of byte to download
                 String byteRange = mStartByte + "-" + mEndByte;

@@ -50,7 +50,7 @@ public abstract class Downloader extends Observable implements Runnable{
         return mDownloadFile.getSource();
     }
 
-    public int getFileSize() {
+    public long getFileSize() {
         return mDownloadFile.getFileSize();
     }
 
@@ -84,12 +84,12 @@ public abstract class Downloader extends Observable implements Runnable{
     protected abstract class DownloadThread implements Runnable {
         protected int mThreadID;
         protected DownloadFile mDownloadFile;
-        protected int mStartByte;
-        protected int mEndByte;
+        protected long mStartByte;
+        protected long mEndByte;
         protected boolean mIsFinished;
         protected Thread mThread;
 
-        public DownloadThread(int threadID, DownloadFile downloadFile, int startByte, int endByte) {
+        public DownloadThread(int threadID, DownloadFile downloadFile, long startByte, long endByte) {
             mThreadID = threadID;
             mDownloadFile = downloadFile;
             mStartByte = startByte;

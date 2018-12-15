@@ -54,6 +54,9 @@ public class DownloadManager {
             case Constants.HTTP:
                 fd = new HttpDownloader(downloadFile);
                 break;
+            case Constants.HTTPS:
+                fd = new HttpsDownloader(downloadFile);
+                break;
             case Constants.FTP:
                 fd = new FtpDownloader(downloadFile);
                 break;

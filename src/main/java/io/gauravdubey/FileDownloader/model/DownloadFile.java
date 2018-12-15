@@ -1,13 +1,9 @@
 package io.gauravdubey.FileDownloader.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.gauravdubey.FileDownloader.config.Constants;
-import lombok.Data;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 
@@ -24,7 +20,7 @@ public class DownloadFile extends AbstractPersistable<Long> {
 
     private Date creationTime;
     private Date modificationTime;
-    protected int fileSize;
+    private long fileSize;
 
     public DownloadFile(){
 
@@ -74,7 +70,7 @@ public class DownloadFile extends AbstractPersistable<Long> {
         return fileName;
     }
 
-    public int getFileSize() {
+    public long getFileSize() {
         return fileSize;
     }
 
@@ -82,7 +78,7 @@ public class DownloadFile extends AbstractPersistable<Long> {
         this.state = state;
     }
 
-    public void setFileSize(int fileSize) {
+    public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
     }
 
