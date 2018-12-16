@@ -2,24 +2,20 @@ package io.gauravdubey.FileDownloader.workers;
 
 import io.gauravdubey.FileDownloader.config.Constants;
 import io.gauravdubey.FileDownloader.model.DownloadFile;
-
-import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DownloadManager {
 
 
     private static DownloadManager sInstance = null;
-    private int mNumConnPerDownload;
-    private ArrayList<Downloader> mDownloadList;
+
+    ExecutorService downloadService = Executors.newFixedThreadPool(10);
 
 
     /** Private constructor,
      * to stop creation of multiple object of download Manager */
-    private DownloadManager() {
-        mNumConnPerDownload = Constants.DEFAULT_NUM_CONN_PER_DOWNLOAD;
-
-        mDownloadList = new ArrayList<Downloader>();
-    }
+    private DownloadManager() {}
 
     public static DownloadManager getInstance() {
         if (sInstance == null)
@@ -28,43 +24,33 @@ public class DownloadManager {
         return sInstance;
     }
 
-    public int getNumConnPerDownload() {
-        return mNumConnPerDownload;
-    }
-
-    public void SetNumConnPerDownload(int value) {
-        mNumConnPerDownload = value;
-    }
-
-    public Downloader getDownload(int index) {
-        return mDownloadList.get(index);
-    }
-
-    public void removeDownload(int index) {
-        mDownloadList.remove(index);
-    }
-
-    public ArrayList<Downloader> getDownloadList() {
-        return mDownloadList;
-    }
-
-    public Downloader createDownload(DownloadFile downloadFile) {
-        Downloader fd = null;
+    public void createDownload(DownloadFile downloadFile) {
+        DownloadTask downloadTask = null;
         switch (downloadFile.getProtocol()){
             case Constants.HTTP:
-                fd = new HttpDownloader(downloadFile);
+                downloadTask = new HttpDownloadTask(downloadFile);
                 break;
             case Constants.HTTPS:
-                fd = new HttpsDownloader(downloadFile);
+                downloadTask = new HttpDownloadTask(downloadFile);
                 break;
             case Constants.FTP:
-                fd = new FtpDownloader(downloadFile);
+                downloadTask = new HttpDownloadTask(downloadFile);
                 break;
             case Constants.SFTP:
-                fd = new SftpDownloader(downloadFile);
+                downloadTask = new HttpDownloadTask(downloadFile);
                 break;
         }
-        mDownloadList.add(fd);
-        return fd;
+        downloadService.execute(downloadTask);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
