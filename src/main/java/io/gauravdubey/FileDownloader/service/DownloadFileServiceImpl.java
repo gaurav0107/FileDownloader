@@ -6,12 +6,9 @@ import io.gauravdubey.FileDownloader.model.DownloadFileRequest;
 import io.gauravdubey.FileDownloader.model.DownloadFileResposne;
 import io.gauravdubey.FileDownloader.model.DownloadRepository;
 import io.gauravdubey.FileDownloader.workers.DownloadManager;
-import io.gauravdubey.FileDownloader.workers.DownloadManager2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.Option;
-import java.io.IOException;
 import java.util.*;
 
 @Component

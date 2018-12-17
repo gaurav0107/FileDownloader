@@ -21,6 +21,7 @@ public class DownloadFile extends AbstractPersistable<Long> {
     private Date creationTime;
     private Date modificationTime;
     private long fileSize;
+    private String destination;
 
     public DownloadFile(){
 
@@ -33,6 +34,7 @@ public class DownloadFile extends AbstractPersistable<Long> {
         this.fileName = source.substring(source.lastIndexOf('/') + 1);
         this.fileSize = -1;
         this.protocol = source.substring(0, source.indexOf(':'));
+        this.destination = "/tmp/"+ this.fileName;
     }
 
     public Date getRequestTime() {
@@ -84,6 +86,10 @@ public class DownloadFile extends AbstractPersistable<Long> {
 
     public String getProtocol() {
         return protocol;
+    }
+
+    public String getDestination() {
+        return destination;
     }
 }
 

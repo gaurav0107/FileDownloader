@@ -24,7 +24,7 @@ public class DownloadManager {
         return sInstance;
     }
 
-    public void createDownload(DownloadFile downloadFile) {
+    public void createDownload(DownloadFile downloadFile){
         DownloadTask downloadTask = null;
         switch (downloadFile.getProtocol()){
             case Constants.HTTP:
@@ -34,10 +34,10 @@ public class DownloadManager {
                 downloadTask = new HttpDownloadTask(downloadFile);
                 break;
             case Constants.FTP:
-                downloadTask = new HttpDownloadTask(downloadFile);
+                downloadTask = new FtpDownloadTask(downloadFile);
                 break;
             case Constants.SFTP:
-                downloadTask = new HttpDownloadTask(downloadFile);
+                downloadTask = new SftpDownloadTask(downloadFile);
                 break;
         }
         downloadService.execute(downloadTask);
