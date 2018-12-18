@@ -24,4 +24,5 @@
 /nbdist/
 /.nb-gradle/
 
+### Default download storage directory
 storage
