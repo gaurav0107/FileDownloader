@@ -29,7 +29,7 @@ public class FtpDownloadTask extends DownloadTask  {
         ftp = new FTPClient();
         ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
         int reply;
-        ftp.connect(Utils.getHost(logger, mDownloadFile.getSource()));
+        ftp.connect(Utils.getHost(logger, mDownloadFile.getUrl()));
         reply = ftp.getReplyCode();
         if (!FTPReply.isPositiveCompletion(reply)) {
             ftp.disconnect();
@@ -45,7 +45,7 @@ public class FtpDownloadTask extends DownloadTask  {
         try {
             createConnection();
             FileOutputStream fos = new FileOutputStream(mDownloadFile.getDestination());
-            if(this.ftp.retrieveFile(Utils.getPath(logger, mDownloadFile.getSource()), fos)){
+            if(this.ftp.retrieveFile(Utils.getPath(logger, mDownloadFile.getUrl()), fos)){
                 downloadSuccess();
             }else {
                 downloadFailed("");
@@ -78,6 +78,7 @@ public class FtpDownloadTask extends DownloadTask  {
 
     @Override
     public void run() {
+        initDownload();
         downloadFile();
     }
 }

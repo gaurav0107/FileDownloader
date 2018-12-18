@@ -8,14 +8,13 @@ import java.util.UUID;
 
 public interface DownloadFileService {
 
-    //DownloadFileResposne create(DownloadFileRequest downloadFile);
 
     DownloadResponse create(DownloadRequest downloadRequest);
 
     Optional<DownloadResponse> find(UUID id);
 
-    //Optional<DownloadFileResposne> find(Long id);
-
     List<DownloadResponse> findAll();
+
+    DownloadFile update(DownloadFile downloadFile);
 
 }

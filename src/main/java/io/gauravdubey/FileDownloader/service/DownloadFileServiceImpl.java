@@ -22,6 +22,8 @@ public class DownloadFileServiceImpl implements DownloadFileService {
     @Autowired
     private DownloadRequestLogRepository downloadRequestLogRepository;
 
+    @Autowired DownloadFileRepository downloadFileRepository;
+
     @Override
     @Transactional
     public DownloadResponse create(DownloadRequest downloadRequest) {
@@ -58,23 +60,6 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         }
     }
 
-    /*
-    @Override
-    public Optional<DownloadFileResposne> find(Long id) {
-        Optional<DownloadFile> downloadFile = downloadRepository.findById(id);
-
-        if(!downloadFile.isPresent()){
-            return Optional.empty();
-        }else {
-            DownloadFileResposne downloadFileResposne = new DownloadFileResposne();
-            downloadFileResposne.setId(downloadFile.get().getId());
-            downloadFileResposne.setSource(downloadFile.get().getSource());
-            downloadFileResposne.setRequestTime(downloadFile.get().getRequestTime());
-            return Optional.ofNullable(downloadFileResposne);
-        }
-
-    }
-*/
     @Override
     public List<DownloadResponse> findAll() {
         List<DownloadRequestLog> downloadRequestLogs = downloadRequestLogRepository.findAll();
@@ -88,5 +73,10 @@ public class DownloadFileServiceImpl implements DownloadFileService {
             downloadResponses.add(downloadResponse);
         }
         return downloadResponses;
+    }
+
+    @Override
+    public DownloadFile update(DownloadFile downloadFile) {
+        return downloadFileRepository.save(downloadFile);
     }
 }

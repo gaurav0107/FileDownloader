@@ -19,8 +19,8 @@ public class DownloadFile{
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", columnDefinition = "uuid")
     private UUID downloadFileId;
-
     private Date requestTime;
+    private String url;
     private String source;
     private int state;
     private String fileName;
@@ -30,6 +30,7 @@ public class DownloadFile{
     private long fileSize;
     private String destination;
     private String errorMessage;
+    private String params;
 
     @ManyToOne @JoinColumn(name = "request_id")
     @JsonBackReference
@@ -41,6 +42,13 @@ public class DownloadFile{
 
     public DownloadFile(DownloadRequestLog downloadRequestLog, String source){
         this.source = source;
+        if(source.contains("?")){
+            this.params = source.substring(source.indexOf("?")+1);
+            this.url = source.substring(0, source.indexOf("?"));
+        }else {
+            this.params = "";
+            this.url = source;
+        }
         this.requestTime = new Date();
         this.state = Constants.PENDING;
         this.fileName = source.substring(source.lastIndexOf('/') + 1);
@@ -115,6 +123,18 @@ public class DownloadFile{
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public String getParams() {
+        return params;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public DownloadRequestLog getDownloadRequestLog() {
+        return downloadRequestLog;
     }
 }
 

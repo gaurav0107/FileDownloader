@@ -1,11 +1,18 @@
 package io.gauravdubey.FileDownloader;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import io.gauravdubey.FileDownloader.config.Constants;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -43,8 +50,21 @@ public class Utils {
 
     public static String getTempDownloadLocation(String fileName){
         return Constants.DEFAULT_TEMP_LOCATION + fileName;
+    }
 
-
+    public static Boolean copyFileToPermanentLocation(String sourceFile, String fileName){
+        File directory = new File(Constants.DEFAULT_STORAGE_LOCATION);
+        if (! directory.exists()){
+            directory.mkdir();
+        }
+        try {
+            Files.copy(Paths.get(sourceFile), Paths.get(Constants.DEFAULT_STORAGE_LOCATION + "/" + fileName),
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
 
