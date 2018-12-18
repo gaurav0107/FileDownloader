@@ -17,7 +17,7 @@ import java.net.URISyntaxException;
 public class FtpDownloadTask extends DownloadTask  {
     protected FTPClient ftp;
 
-    private static final Logger logger = LoggerFactory.getLogger(HttpDownloadTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(FtpDownloadTask.class);
 
     protected FtpDownloadTask(DownloadFile downloadFile){
         super(downloadFile);

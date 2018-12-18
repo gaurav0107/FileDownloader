@@ -18,7 +18,7 @@ public class DownloadRequestValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-        ValidationUtils.rejectIfEmpty(errors, "source", "blank");
+        ValidationUtils.rejectIfEmpty(errors, "downloadFiles", "blank");
     }
 }
 

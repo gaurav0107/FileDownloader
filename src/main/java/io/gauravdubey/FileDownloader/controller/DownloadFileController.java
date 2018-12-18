@@ -9,7 +9,6 @@ import io.gauravdubey.FileDownloader.model.*;
 import io.gauravdubey.FileDownloader.service.DownloadFileService;
 
 
-import io.gauravdubey.FileDownloader.workers.DownloadManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -18,12 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 import static java.util.stream.Collectors.toMap;
@@ -46,54 +45,55 @@ public class DownloadFileController {
     @Autowired
     private MessageSource messageSource;
 
-
+/*
     @InitBinder
     protected void initBinder(WebDataBinder webDataBinder){
         webDataBinder.setValidator(downloadRequestValidator);
     }
+*/
 
-
-    @GetMapping("downloadFile")
-    public ResponseEntity<Object> retrieveAllFiles() {
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("")
-                .build().toUri();
-        return ResponseEntity.created(uri).body(downloadFileService.findAll());
+    @GetMapping("downloadRequest")
+    public List<DownloadResponse> retrieveAllFiles() {
+        //URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+        //        .build().toUri();
+        //return ResponseEntity.created(uri).body(downloadFileService.findAll());
+        return downloadFileService.findAll();
     }
 
 
-    @GetMapping("downloadFile/{id}")
-    public DownloadFileResposne retrieveDownloadFile(@PathVariable Long id){
-        Optional<DownloadFileResposne> downloadFileResposne = downloadFileService.find(id);
-        if(!downloadFileResposne.isPresent()){
+
+    @GetMapping("downloadRequest/{id}")
+    public DownloadResponse retrieveDownloadFile(@PathVariable UUID id){
+        Optional<DownloadResponse> downloadResposne = downloadFileService.find(id);
+        if(!downloadResposne.isPresent()){
             throw new ResourceNotFoundException();
         }
-        return downloadFileResposne.get();
-
+        return downloadResposne.get();
     }
 
-    @DeleteMapping("/downloadFile/{id}")
+    @DeleteMapping("downloadRequest/{id}")
     public void deleteDownloadFile(@PathVariable Long id) {
         downloadRepository.deleteById(id);
     }
 
 
-    @PostMapping(value = "/downloadFile", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createDownloadFile(@Validated @RequestBody DownloadFileRequest downloadFileRequest,
+    @PostMapping(value = "downloadRequest", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> createDownloadFiles(@Validated @RequestBody DownloadRequest downloadRequest,
                                                      Errors errors){
-
-
         if (errors.hasErrors()) {
             throw new InvalidResourceException(errors);
         }
 
-        DownloadFileResposne downloadFileResposne = downloadFileService.create(downloadFileRequest);
+        DownloadResponse downloadResposne = downloadFileService.create(downloadRequest);
 
-        URI uri = fromMethodCall(on(DownloadFileController.class).retrieveDownloadFile(downloadFileResposne.getId()))
+        URI uri = fromMethodCall(on(DownloadFileController.class).retrieveDownloadFile(downloadResposne.getRequestId()))
                 .build()
                 .toUri();
 
-        return ResponseEntity.created(uri).body(downloadFileResposne);
+        return ResponseEntity.created(uri).body(downloadResposne);
+
     }
+
 
     @ExceptionHandler(InvalidResourceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
