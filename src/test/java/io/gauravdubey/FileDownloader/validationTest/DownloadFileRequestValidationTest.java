@@ -1,5 +1,6 @@
 package io.gauravdubey.FileDownloader.validationTest;
 
+import io.gauravdubey.FileDownloader.model.DownloadRequest;
 import io.gauravdubey.FileDownloader.model.DownloadRequestValidator;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class DownloadFileRequestValidationTest {
 
     @Test
     public void supportsValidatingDownloadFileRequests() {
-        assertThat(downloadRequestValidator.supports(DownloadFileRequest.class), is(true));
+        assertThat(downloadRequestValidator.supports(DownloadRequest.class), is(true));
     }
 
    /* @Test

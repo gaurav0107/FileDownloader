@@ -1,9 +1,12 @@
 package io.gauravdubey.FileDownloader.workers;
 
 import com.jcraft.jsch.*;
+import io.gauravdubey.FileDownloader.Utils;
 import io.gauravdubey.FileDownloader.model.DownloadFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
 
@@ -19,36 +22,29 @@ public class SftpDownloadTask extends DownloadTask  {
         JSch jsch = new JSch();
         Session session;
         try {
-            session = jsch.getSession(getUserName(), Utils.getHost(logger, mDownloadFile.getSource()), 22);
+            session = jsch.getSession(Utils.getQuery(mDownloadFile.getSource(), "user"),
+                    Utils.getHost(logger, mDownloadFile.getSource()), 22);
             session.setConfig("StrictHostKeyChecking", "no");
-            session.setPassword(getPassword());
+            session.setPassword(Utils.getQuery(mDownloadFile.getSource(), "pass"));
             session.connect();
             Channel channel = session.openChannel("sftp");
             channel.connect();
             ChannelSftp sftpChannel = (ChannelSftp) channel;
-            sftpChannel.get(Utils.getPath(logger, mDownloadFile.getSource()), mDownloadFile.getDestination());
+            sftpChannel.get(Utils.getPath(logger, mDownloadFile.getSource()),
+                    Utils.getTempDownloadLocation(mDownloadFile.getFileName()));
             sftpChannel.exit();
             session.disconnect();
-            logger.info("Download Complete");
+            downloadSuccess();
         } catch (JSchException e) {
             e.printStackTrace();
-            logger.info("Download Failed");
+            downloadFailed(e.getMessage());
         } catch (SftpException e) {
             e.printStackTrace();
-            logger.info("Download Failed");
+            downloadFailed(e.getMessage());
         } catch (URISyntaxException e) {
-            logger.info("Download Failed due to invalid Url");
             e.printStackTrace();
+            downloadFailed(e.getMessage());
         }
-    }
-
-
-    public String getUserName(){
-        return "demo";
-    }
-
-    public String getPassword(){
-        return "password";
     }
 
     @Override

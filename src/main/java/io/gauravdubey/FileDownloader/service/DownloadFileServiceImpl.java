@@ -2,11 +2,13 @@ package io.gauravdubey.FileDownloader.service;
 
 
 import io.gauravdubey.FileDownloader.model.*;
+import io.gauravdubey.FileDownloader.workers.DownloadManager;
 import io.gauravdubey.FileDownloader.workers.HttpDownloadTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -20,23 +22,8 @@ public class DownloadFileServiceImpl implements DownloadFileService {
     @Autowired
     private DownloadRequestLogRepository downloadRequestLogRepository;
 
-
-
-   /* @Override
-    public DownloadFileResposne create(DownloadFileRequest downloadFileRequest) {
-
-       DownloadFile downloadFile = new DownloadFile(downloadFileRequest.getSource());
-        downloadFile = downloadRepository.save(downloadFile);
-
-        DownloadFileResposne downloadFileResponse = new DownloadFileResposne();
-        downloadFileResponse.setId(downloadFile.getId());
-        downloadFileResponse.setSource(downloadFile.getSource());
-        downloadFileResponse.setRequestTime(downloadFile.getRequestTime());
-        DownloadManager.getInstance().createDownload(downloadFile);
-        return  new DownloadFileResposne();
-    }*/
-
     @Override
+    @Transactional
     public DownloadResponse create(DownloadRequest downloadRequest) {
 
         Set<String> downloadFileUrls = downloadRequest.getDownloadFiles();
@@ -49,16 +36,11 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         }
         downloadRequestLog.setDownloadFiles(downloadFiles);
         downloadRequestLog = downloadRequestLogRepository.save(downloadRequestLog);
-
-        logger.info(downloadFiles.toString());
-
+        DownloadManager.getInstance().createDownload(downloadRequestLog);
         DownloadResponse downloadResponse = new DownloadResponse();
         downloadResponse.setRequestId(downloadRequestLog.getRequestId());
         downloadResponse.setRequestTime(downloadRequestLog.getRequestTime());
         downloadResponse.setDownloadFiles(downloadRequestLog.getDownloadFiles());
-
-
-        logger.info(downloadResponse.toString());
         return downloadResponse;
     }
 

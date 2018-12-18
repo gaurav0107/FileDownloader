@@ -12,7 +12,7 @@ public class DownloadRequestValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return DownloadFileRequest.class.equals(aClass);
+        return DownloadRequest.class.equals(aClass);
 
     }
 

@@ -61,7 +61,7 @@ public class DownloadFileControllerTest {
 
     @Before
     public void setUpPostRequestValidator() {
-        Mockito.when(downloadRequestValidator.supports(DownloadFileRequest.class))
+        Mockito.when(downloadRequestValidator.supports(DownloadRequest.class))
                 .thenReturn(true);
     }
 
@@ -90,7 +90,7 @@ public class DownloadFileControllerTest {
             Errors errors = invocation.getArgument(1);
             errors.rejectValue("source", "blank");
             return null;
-        }).when(downloadRequestValidator).validate(isA(DownloadFileRequest.class), isA(Errors.class));
+        }).when(downloadRequestValidator).validate(isA(DownloadRequest.class), isA(Errors.class));
 
         when(messageSource.getMessage("blank", null, null))
                 .thenReturn("can't be blank");

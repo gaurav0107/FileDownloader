@@ -29,6 +29,7 @@ public class DownloadFile{
     private Date modificationTime;
     private long fileSize;
     private String destination;
+    private String errorMessage;
 
     @ManyToOne @JoinColumn(name = "request_id")
     @JsonBackReference
@@ -47,6 +48,7 @@ public class DownloadFile{
         this.protocol = source.substring(0, source.indexOf(':'));
         this.destination = "/tmp/"+ this.fileName;
         this.downloadRequestLog = downloadRequestLog;
+        this.errorMessage = "";
     }
 
     public Date getRequestTime() {
@@ -103,12 +105,17 @@ public class DownloadFile{
     public String getDestination() {
         return destination;
     }
-
-
     public UUID getDownloadFileId() {
         return downloadFileId;
     }
 
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }
 
 

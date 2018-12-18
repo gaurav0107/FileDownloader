@@ -1,6 +1,6 @@
 package io.gauravdubey.FileDownloader.workers;
 
-import io.gauravdubey.FileDownloader.controller.RestErrorHandler;
+import io.gauravdubey.FileDownloader.Utils;
 import io.gauravdubey.FileDownloader.model.DownloadFile;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
@@ -25,16 +25,19 @@ public class HttpDownloadTask extends DownloadTask {
     public void run() {
         try {
             InputStream inputStream = new URL(mDownloadFile.getSource()).openStream();
-            FileOutputStream fileOS = new FileOutputStream("/tmp/"+mDownloadFile.getFileName());
+            FileOutputStream fileOS = new FileOutputStream(Utils.getTempDownloadLocation(mDownloadFile.getFileName()));
             long i = IOUtils.copyLarge(inputStream, fileOS);
-            logger.info("size of file  downloaded: ", i);
-            System.out.println("gaurav dubey:"+ i);
+            logger.info("size of file  downloaded: " + i);
+            downloadSuccess();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            downloadFailed(e.getMessage());
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            downloadFailed(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            downloadFailed(e.getMessage());
         }
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -32,9 +33,6 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 @RestController
 @RequestMapping("api/v1/")
 public class DownloadFileController {
-
-    @Autowired
-    private DownloadRepository downloadRepository;
 
     @Autowired
     private DownloadFileService downloadFileService;
@@ -53,27 +51,21 @@ public class DownloadFileController {
 */
 
     @GetMapping("downloadRequest")
-    public List<DownloadResponse> retrieveAllFiles() {
-        //URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("")
-        //        .build().toUri();
-        //return ResponseEntity.created(uri).body(downloadFileService.findAll());
-        return downloadFileService.findAll();
+    public ResponseEntity<List<DownloadResponse>> retrieveAllRequests() {
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("")
+                .build().toUri();
+        return ResponseEntity.created(uri).body(downloadFileService.findAll());
     }
 
 
 
     @GetMapping("downloadRequest/{id}")
-    public DownloadResponse retrieveDownloadFile(@PathVariable UUID id){
+    public ResponseEntity<DownloadResponse> retrieveRequestById(@PathVariable UUID id){
         Optional<DownloadResponse> downloadResposne = downloadFileService.find(id);
         if(!downloadResposne.isPresent()){
             throw new ResourceNotFoundException();
         }
-        return downloadResposne.get();
-    }
-
-    @DeleteMapping("downloadRequest/{id}")
-    public void deleteDownloadFile(@PathVariable Long id) {
-        downloadRepository.deleteById(id);
+        return ResponseEntity.ok().body(downloadResposne.get());
     }
 
 
@@ -86,7 +78,7 @@ public class DownloadFileController {
 
         DownloadResponse downloadResposne = downloadFileService.create(downloadRequest);
 
-        URI uri = fromMethodCall(on(DownloadFileController.class).retrieveDownloadFile(downloadResposne.getRequestId()))
+        URI uri = fromMethodCall(on(DownloadFileController.class).retrieveRequestById(downloadResposne.getRequestId()))
                 .build()
                 .toUri();
 

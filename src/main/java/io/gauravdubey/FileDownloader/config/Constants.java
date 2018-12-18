@@ -33,4 +33,5 @@ public class Constants {
 
 
     public static final int HTTP_CONN_TIMEOUT = 10000;
+    public static final String DEFAULT_TEMP_LOCATION = "/tmp/";
 }
