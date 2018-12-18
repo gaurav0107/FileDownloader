@@ -48,6 +48,10 @@ public class DownloadRequestLog{
         return requestId;
     }
 
+    public void setRequestId(UUID requestId) {
+        this.requestId = requestId;
+    }
+
     public int getPercentageFailure() {
         return percentageFailure;
     }

@@ -66,6 +66,16 @@ public class Utils {
         }
         return true;
     }
+
+    public static long getFileSize(String fileName) {
+        try {
+            return Files.size(new File(Constants.DEFAULT_STORAGE_LOCATION + "/" + fileName).toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        }
+
+    }
 }
 
 

@@ -15,6 +15,6 @@ public interface DownloadFileService {
 
     List<DownloadResponse> findAll();
 
-    DownloadFile update(DownloadFile downloadFile);
+    DownloadRequestLog update(DownloadRequestLog downloadRequestLog);
 
 }

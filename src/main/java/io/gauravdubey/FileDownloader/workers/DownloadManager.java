@@ -4,47 +4,50 @@ import io.gauravdubey.FileDownloader.config.Constants;
 import io.gauravdubey.FileDownloader.model.DownloadFile;
 import io.gauravdubey.FileDownloader.model.DownloadRequest;
 import io.gauravdubey.FileDownloader.model.DownloadRequestLog;
+import org.apache.coyote.http11.HttpOutputBuffer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+@Service
 public class DownloadManager {
 
 
     private static DownloadManager sInstance = null;
 
-    ExecutorService downloadService = Executors.newFixedThreadPool(10);
+    //ExecutorService downloadService = Executors.newFixedThreadPool(10);
 
+    @Autowired
+    private ApplicationContext applicationContext;
 
-    /** Private constructor,
-     * to stop creation of multiple object of download Manager */
-    private DownloadManager() {}
+    @Autowired
+    private TaskExecutor taskExecutor;
 
-    public static DownloadManager getInstance() {
-        if (sInstance == null)
-            sInstance = new DownloadManager();
-
-        return sInstance;
-    }
+    public DownloadManager() {}
 
     public void createDownload(DownloadRequestLog downloadRequestLog){
         for(DownloadFile downloadFile: downloadRequestLog.getDownloadFiles()){
             DownloadTask downloadTask = null;
             switch (downloadFile.getProtocol()){
                 case Constants.HTTP:
-                    downloadTask = new HttpDownloadTask(downloadFile);
+                    downloadTask = applicationContext.getBean(HttpDownloadTask.class, downloadFile);
                     break;
                 case Constants.HTTPS:
-                    downloadTask = new HttpDownloadTask(downloadFile);
+                    downloadTask = applicationContext.getBean(HttpDownloadTask.class, downloadFile);
                     break;
                 case Constants.FTP:
-                    downloadTask = new FtpDownloadTask(downloadFile);
+                    downloadTask = applicationContext.getBean(FtpDownloadTask.class, downloadFile);
                     break;
                 case Constants.SFTP:
-                    downloadTask = new SftpDownloadTask(downloadFile);
+                    downloadTask = applicationContext.getBean(SftpDownloadTask.class, downloadFile);
                     break;
             }
-            downloadService.execute(downloadTask);
+            taskExecutor.execute(downloadTask);
         }
     }
 

@@ -6,9 +6,12 @@ import io.gauravdubey.FileDownloader.model.DownloadFile;
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,6 +19,8 @@ import java.io.PrintWriter;
 import java.net.URISyntaxException;
 
 
+@Component
+@Scope("prototype")
 public class FtpDownloadTask extends DownloadTask  {
     protected FTPClient ftp;
 

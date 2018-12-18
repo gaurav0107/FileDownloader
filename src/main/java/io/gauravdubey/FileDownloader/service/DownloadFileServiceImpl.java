@@ -1,6 +1,7 @@
 package io.gauravdubey.FileDownloader.service;
 
 
+import io.gauravdubey.FileDownloader.errors.ResourceNotFoundException;
 import io.gauravdubey.FileDownloader.model.*;
 import io.gauravdubey.FileDownloader.workers.DownloadManager;
 import io.gauravdubey.FileDownloader.workers.HttpDownloadTask;
@@ -24,8 +25,10 @@ public class DownloadFileServiceImpl implements DownloadFileService {
 
     @Autowired DownloadFileRepository downloadFileRepository;
 
+    @Autowired
+    DownloadManager downloadManager;
+
     @Override
-    @Transactional
     public DownloadResponse create(DownloadRequest downloadRequest) {
 
         Set<String> downloadFileUrls = downloadRequest.getDownloadFiles();
@@ -38,11 +41,11 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         }
         downloadRequestLog.setDownloadFiles(downloadFiles);
         downloadRequestLog = downloadRequestLogRepository.save(downloadRequestLog);
-        DownloadManager.getInstance().createDownload(downloadRequestLog);
         DownloadResponse downloadResponse = new DownloadResponse();
         downloadResponse.setRequestId(downloadRequestLog.getRequestId());
         downloadResponse.setRequestTime(downloadRequestLog.getRequestTime());
         downloadResponse.setDownloadFiles(downloadRequestLog.getDownloadFiles());
+        downloadManager.createDownload(downloadRequestLog);
         return downloadResponse;
     }
 
@@ -75,8 +78,15 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         return downloadResponses;
     }
 
+
     @Override
-    public DownloadFile update(DownloadFile downloadFile) {
-        return downloadFileRepository.save(downloadFile);
+    public DownloadRequestLog update(DownloadRequestLog downloadRequestLog) {
+        System.out.println(downloadRequestLog.getRequestId());
+        Optional<DownloadRequestLog> drl = downloadRequestLogRepository.findById(downloadRequestLog.getRequestId());
+        if(!drl.isPresent()){
+            throw new ResourceNotFoundException();
+        }
+        downloadRequestLog.setRequestId(drl.get().getRequestId());
+        return downloadRequestLogRepository.save(downloadRequestLog);
     }
 }

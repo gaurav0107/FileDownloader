@@ -3,6 +3,7 @@ package io.gauravdubey.FileDownloader.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.gauravdubey.FileDownloader.config.Constants;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
@@ -31,6 +32,9 @@ public class DownloadFile{
     private String destination;
     private String errorMessage;
     private String params;
+    private long downloadStartTime;
+    private long downloadEndTime;
+    private float downloadSpeed;
 
     @ManyToOne @JoinColumn(name = "request_id")
     @JsonBackReference
@@ -57,6 +61,9 @@ public class DownloadFile{
         this.destination = "/tmp/"+ this.fileName;
         this.downloadRequestLog = downloadRequestLog;
         this.errorMessage = "";
+        this.downloadStartTime =0;
+        this.downloadEndTime = 0;
+        this.downloadSpeed = (float) 0.0;
     }
 
     public Date getRequestTime() {
@@ -135,6 +142,34 @@ public class DownloadFile{
 
     public DownloadRequestLog getDownloadRequestLog() {
         return downloadRequestLog;
+    }
+
+    public void setDownloadFileId(UUID downloadFileId) {
+        this.downloadFileId = downloadFileId;
+    }
+
+    public long getDownloadStartTime() {
+        return downloadStartTime;
+    }
+
+    public void setDownloadStartTime(long downloadStartTime) {
+        this.downloadStartTime = downloadStartTime;
+    }
+
+    public long getDownloadEndTime() {
+        return downloadEndTime;
+    }
+
+    public void setDownloadEndTime(long downloadEndTime) {
+        this.downloadEndTime = downloadEndTime;
+    }
+
+    public float getDownloadSpeed() {
+        return downloadSpeed;
+    }
+
+    public void setDownloadSpeed(float downloadSpeed) {
+        this.downloadSpeed = downloadSpeed;
     }
 }
 

@@ -6,11 +6,15 @@ import io.gauravdubey.FileDownloader.config.Constants;
 import io.gauravdubey.FileDownloader.model.DownloadFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
 
+@Component
+@Scope("prototype")
 public class SftpDownloadTask extends DownloadTask  {
 
     private static final Logger logger = LoggerFactory.getLogger(SftpDownloadTask.class);
