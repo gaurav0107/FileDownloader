@@ -54,7 +54,7 @@ public class DownloadFileController {
     public ResponseEntity<List<DownloadResponse>> retrieveAllRequests() {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .build().toUri();
-        return ResponseEntity.created(uri).body(downloadFileService.findAll());
+        return ResponseEntity.ok().body(downloadFileService.findAll());
     }
 
 

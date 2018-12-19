@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "download_request_log")
-public class DownloadRequestLog{
+public class DownloadRequestLog {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -21,6 +21,9 @@ public class DownloadRequestLog{
     private UUID requestId;
     private Date requestTime;
     private int percentageFailure;
+    private int totalFiles;
+    private int successfulDownloads;
+    private int failedDownloads;
 
     @OneToMany(mappedBy = "downloadRequestLog", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -29,6 +32,8 @@ public class DownloadRequestLog{
     public DownloadRequestLog() {
         requestTime = new Date();
         this.percentageFailure = 0;
+        this.successfulDownloads = 0;
+        this.failedDownloads = 0;
     }
 
     public Date getRequestTime() {
@@ -42,6 +47,7 @@ public class DownloadRequestLog{
 
     public void setDownloadFiles(Set<DownloadFile> downloadFiles) {
         this.downloadFiles = downloadFiles;
+        this.totalFiles = downloadFiles.size();
     }
 
     public UUID getRequestId() {
@@ -51,12 +57,5 @@ public class DownloadRequestLog{
     public void setRequestId(UUID requestId) {
         this.requestId = requestId;
     }
-
-    public int getPercentageFailure() {
-        return percentageFailure;
-    }
-
-    public void setPercentageFailure(int percentageFailure) {
-        this.percentageFailure = percentageFailure;
-    }
 }
+

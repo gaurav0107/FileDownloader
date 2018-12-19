@@ -171,6 +171,10 @@ public class DownloadFile{
     public void setDownloadSpeed(float downloadSpeed) {
         this.downloadSpeed = downloadSpeed;
     }
+
+    public void setDownloadRequestLog(DownloadRequestLog downloadRequestLog) {
+        this.downloadRequestLog = downloadRequestLog;
+    }
 }
 
 

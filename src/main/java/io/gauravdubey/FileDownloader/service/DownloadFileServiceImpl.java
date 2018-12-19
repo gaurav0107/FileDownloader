@@ -1,6 +1,7 @@
 package io.gauravdubey.FileDownloader.service;
 
 
+import io.gauravdubey.FileDownloader.config.Constants;
 import io.gauravdubey.FileDownloader.errors.ResourceNotFoundException;
 import io.gauravdubey.FileDownloader.model.*;
 import io.gauravdubey.FileDownloader.workers.DownloadManager;
@@ -9,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.*;
 
@@ -30,7 +31,6 @@ public class DownloadFileServiceImpl implements DownloadFileService {
 
     @Override
     public DownloadResponse create(DownloadRequest downloadRequest) {
-
         Set<String> downloadFileUrls = downloadRequest.getDownloadFiles();
         Iterator<String> iterator = downloadFileUrls.iterator();
         Set<DownloadFile> downloadFiles = new HashSet<>();
@@ -41,12 +41,8 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         }
         downloadRequestLog.setDownloadFiles(downloadFiles);
         downloadRequestLog = downloadRequestLogRepository.save(downloadRequestLog);
-        DownloadResponse downloadResponse = new DownloadResponse();
-        downloadResponse.setRequestId(downloadRequestLog.getRequestId());
-        downloadResponse.setRequestTime(downloadRequestLog.getRequestTime());
-        downloadResponse.setDownloadFiles(downloadRequestLog.getDownloadFiles());
         downloadManager.createDownload(downloadRequestLog);
-        return downloadResponse;
+        return createDownloadResposne(downloadRequestLog);
     }
 
     @Override
@@ -55,11 +51,7 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         if(! downloadRequestLog.isPresent())
             return Optional.empty();
         else {
-            DownloadResponse downloadResponse = new DownloadResponse();
-            downloadResponse.setRequestTime(downloadRequestLog.get().getRequestTime());
-            downloadResponse.setRequestId(downloadRequestLog.get().getRequestId());
-            downloadResponse.setDownloadFiles(downloadRequestLog.get().getDownloadFiles());
-            return Optional.ofNullable(downloadResponse);
+            return Optional.ofNullable(createDownloadResposne(downloadRequestLog.get()));
         }
     }
 
@@ -68,12 +60,7 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         List<DownloadRequestLog> downloadRequestLogs = downloadRequestLogRepository.findAll();
         List<DownloadResponse> downloadResponses = new ArrayList<>();
         for (ListIterator<DownloadRequestLog> iter = downloadRequestLogs.listIterator(); iter.hasNext(); ) {
-            DownloadRequestLog downloadRequestLog = iter.next();
-            DownloadResponse downloadResponse = new DownloadResponse();
-            downloadResponse.setDownloadFiles(downloadRequestLog.getDownloadFiles());
-            downloadResponse.setRequestTime(downloadRequestLog.getRequestTime());
-            downloadResponse.setRequestId(downloadRequestLog.getRequestId());
-            downloadResponses.add(downloadResponse);
+            downloadResponses.add(createDownloadResposne(iter.next()));
         }
         return downloadResponses;
     }
@@ -88,5 +75,25 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         }
         downloadRequestLog.setRequestId(drl.get().getRequestId());
         return downloadRequestLogRepository.save(downloadRequestLog);
+    }
+
+    public DownloadResponse createDownloadResposne(DownloadRequestLog downloadRequestLog){
+        int success;
+        int failed;
+        DownloadResponse downloadResponse = new DownloadResponse();
+        downloadResponse.setDownloadFiles(downloadRequestLog.getDownloadFiles());
+        downloadResponse.setRequestTime(downloadRequestLog.getRequestTime());
+        downloadResponse.setRequestId(downloadRequestLog.getRequestId());
+        downloadResponse.setTotalFiles(downloadRequestLog.getDownloadFiles().size());
+        success = failed = 0;
+        for(DownloadFile df: downloadRequestLog.getDownloadFiles()){
+            if(df.getState() == Constants.COMPLETED)
+                success += 1;
+            else if(df.getState() == Constants.CANCELLED || df.getState() == Constants.FAILED)
+                failed +=1;
+        }
+        downloadResponse.setFailedDownloads(failed);
+        downloadResponse.setSuccessfulDownloads(success);
+        return downloadResponse;
     }
 }

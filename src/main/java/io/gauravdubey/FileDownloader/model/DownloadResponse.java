@@ -10,6 +10,9 @@ public class DownloadResponse {
     private UUID requestId;
     private Set<DownloadFile> downloadFiles;
     private Date requestTime;
+    private int totalFiles;
+    private int successfulDownloads;
+    private int failedDownloads;
 
     public UUID getRequestId() {
         return requestId;
@@ -33,5 +36,30 @@ public class DownloadResponse {
 
     public Date getRequestTime() {
         return requestTime;
+    }
+
+    public void setTotalFiles(int totalFiles) {
+        this.totalFiles = totalFiles;
+    }
+
+    public void setSuccessfulDownloads(int successfulDownloads) {
+        this.successfulDownloads = successfulDownloads;
+    }
+
+    public void setFailedDownloads(int failedDownloads) {
+        this.failedDownloads = failedDownloads;
+    }
+
+
+    public int getTotalFiles() {
+        return totalFiles;
+    }
+
+    public int getSuccessfulDownloads() {
+        return successfulDownloads;
+    }
+
+    public int getFailedDownloads() {
+        return failedDownloads;
     }
 }
