@@ -17,16 +17,16 @@ To get an User Interface this project can be clubbed with a
 These two has been kept separate to not enforce use of any specific User Interface.
 
 
-##Getting Started
+## Getting Started
 
-####Prerequisites
+#### Prerequisites
 
 For building and running the application you need:
 
 - [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Maven 3](https://maven.apache.org)
 
-####Installation
+#### Installation
 
 Clone the repository:
 
@@ -37,7 +37,7 @@ Clone the repository:
 
 If this is your first time using Github, review http://help.github.com to learn the basics.
 
-####Run Tests:
+#### Run Tests:
 
 Complete Tests
 
@@ -45,14 +45,14 @@ Complete Tests
 mvn test
 ```
 
-####Run Application
+#### Run Application
 
 Using Spring Boot:
 ```shell
 mvn spring-boot:run
 ```
 
-####Api Docs
+#### Api Docs
 [Postman Docs](https://documenter.getpostman.com/view/437815/Rzn6v2zk)
 
 
