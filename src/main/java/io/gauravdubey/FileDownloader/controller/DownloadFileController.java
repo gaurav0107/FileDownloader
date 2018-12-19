@@ -32,7 +32,7 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 @RestController
 @RequestMapping("api/v1/")
-@CrossOrigin(origins = "gdfiledownloader.herokuapp.com")
+@CrossOrigin(origins = "https://gdfiledownloader.herokuapp.com")
 public class DownloadFileController {
 
     @Autowired
