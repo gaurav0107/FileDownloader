@@ -58,7 +58,7 @@ public class DownloadFile{
         this.fileName = source.substring(source.lastIndexOf('/') + 1);
         this.fileSize = -1;
         this.protocol = source.substring(0, source.indexOf(':'));
-        this.destination = "/tmp/"+ this.fileName;
+        this.destination = Constants.DEFAULT_STORAGE_LOCATION + "/" + this.fileName;
         this.downloadRequestLog = downloadRequestLog;
         this.errorMessage = "";
         this.downloadStartTime =0;
