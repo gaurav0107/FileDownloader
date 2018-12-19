@@ -32,7 +32,7 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 @RestController
 @RequestMapping("api/v1/")
-@CrossOrigin(origins = "https://gdfiledownloader.herokuapp.com")
+@CrossOrigin(origins = "https://filedownloaderui-react.herokuapp.com")
 public class DownloadFileController {
 
     @Autowired
@@ -51,7 +51,7 @@ public class DownloadFileController {
     }
 */
 
-    @GetMapping("downloadRequest")
+    @GetMapping("downloadRequest", params = { "page", "size", "order"})
     public ResponseEntity<List<DownloadResponse>> retrieveAllRequests() {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .build().toUri();
