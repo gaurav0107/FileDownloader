@@ -16,7 +16,8 @@ To get an User Interface this project can be clubbed with a
 
 These two has been kept separate to not enforce use of any specific User Interface.
 
-###Getting Started
+
+##Getting Started
 
 ####Prerequisites
 
