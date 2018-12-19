@@ -37,12 +37,17 @@ Clone the repository:
 
 If this is your first time using Github, review http://help.github.com to learn the basics.
 
-#### Run Tests:
+### Run Tests:
 
-Complete Tests
+##### Complete Test Suite
 
 ```shell
 mvn test
+```
+
+##### Integration Test:
+```shell
+mvn test -Dtest=integrationTest
 ```
 
 #### Run Application
