@@ -51,7 +51,7 @@ public class DownloadFileController {
     }
 */
 
-    @GetMapping("downloadRequest", params = { "page", "size", "order"})
+    @GetMapping("downloadRequest")
     public ResponseEntity<List<DownloadResponse>> retrieveAllRequests() {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("")
                 .build().toUri();
