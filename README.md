@@ -57,8 +57,47 @@ Using Spring Boot:
 mvn spring-boot:run
 ```
 
+
+### Demo
+* [Demo With User Interface](https://filedownloaderui-react.herokuapp.com/)
+* [Demo Wihtout User Interface](https://gdfiledownloader.herokuapp.com/api/v1/downloadRequest)
+
 ## Api Docs
 [Postman Docs](https://documenter.getpostman.com/view/437815/Rzn6v2zk)
 
 
+#### Initiate Download Request
+
+###### POST /api/v1/downloadRequest
+
+```curl
+
+curl --location --request POST "https://gdfiledownloader.herokuapp.com/api/v1/downloadRequest" \
+  --header "Content-Type: application/json" \
+  --data "{
+    \"downloadFiles\": [
+        \"http://www.africau.edu/images/default/sample.pdf\",
+        \"sftp://test.rebex.net/readme.txt?user=demo&pass=password\",
+        \"ftp://test.rebex.net/readme.txt?user=demo&pass=password\"
+    ]
+}"
+
+```
+
+###### GET /api/v1/downloadRequest
+
+```$xslt
+
+GET /api/v1/downloadRequest
+
+curl --location --request GET "https://gdfiledownloader.herokuapp.com/api/v1/downloadRequest"
+```
+
+###### GET /api/v1/downloadRequest/{requestId}
+
+```
+
+
+curl --location --request GET "https://gdfiledownloader.herokuapp.com/api/v1/downloadRequest/ce9b4336-ee74-4a45-9720-70ecdef07e00"
+```
 
