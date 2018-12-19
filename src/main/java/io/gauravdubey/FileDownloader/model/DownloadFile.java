@@ -3,8 +3,7 @@ package io.gauravdubey.FileDownloader.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.gauravdubey.FileDownloader.config.Constants;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.jpa.domain.AbstractPersistable;
+
 
 import javax.persistence.*;
 import java.util.Date;
