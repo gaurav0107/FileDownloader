@@ -16,7 +16,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 
 @Component
@@ -41,12 +43,18 @@ public class HttpDownloadTask extends DownloadTask {
             mDownloadFile.setFileSize(i);
             downloadSuccess();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            downloadFailed(e.getMessage());
+            downloadFailed("File Not Found");
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-            downloadFailed(e.getMessage());
+            downloadFailed("Malformed Url");
+        } catch (UnknownHostException e){
+            try {
+                downloadFailed("Unknown Host:" + Utils.getHost(logger,mDownloadFile.getSource()));
+            } catch (URISyntaxException e1) {
+                downloadFailed("Invalid Url");
+            }
         } catch (IOException e) {
+            downloadFailed("IO Exception Occurred");
+        } catch (Exception e){
             e.printStackTrace();
             downloadFailed(e.getMessage());
         }

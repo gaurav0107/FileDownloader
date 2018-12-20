@@ -22,7 +22,7 @@ public class DownloadFile{
     private Date requestTime;
     private String url;
     private String source;
-    private int state;
+    private String state;
     private String fileName;
     private String protocol;
     private Date creationTime;
@@ -39,11 +39,10 @@ public class DownloadFile{
     @JsonBackReference
     private DownloadRequestLog downloadRequestLog;
 
-
     public DownloadFile() {
     }
 
-    public DownloadFile(DownloadRequestLog downloadRequestLog, String source){
+    public DownloadFile(String source) {
         this.source = source;
         if(source.contains("?")){
             this.params = source.substring(source.indexOf("?")+1);
@@ -53,16 +52,21 @@ public class DownloadFile{
             this.url = source;
         }
         this.requestTime = new Date();
-        this.state = Constants.PENDING;
-        this.fileName = source.substring(source.lastIndexOf('/') + 1);
+        this.state = Constants.STATES[Constants.PENDING];
+        this.fileName = source.substring(source.lastIndexOf('/') + 1,
+                source.contains("?")?source.indexOf("?"):source.length());
         this.fileSize = -1;
         this.protocol = source.substring(0, source.indexOf(':'));
         this.destination = Constants.DEFAULT_STORAGE_LOCATION + "/" + this.fileName;
-        this.downloadRequestLog = downloadRequestLog;
         this.errorMessage = "";
         this.downloadStartTime =0;
         this.downloadEndTime = 0;
         this.downloadSpeed = (float) 0.0;
+    }
+
+    public DownloadFile(DownloadRequestLog downloadRequestLog, String source){
+        this(source);
+        this.downloadRequestLog = downloadRequestLog;
     }
 
     public Date getRequestTime() {
@@ -92,7 +96,7 @@ public class DownloadFile{
         modificationTime = new Date();
     }
 
-    public int getState() {
+    public String getState() {
         return state;
     }
 
@@ -105,7 +109,7 @@ public class DownloadFile{
     }
 
     public void setState(int state) {
-        this.state = state;
+        this.state = Constants.STATES[state];
     }
 
     public void setFileSize(long fileSize) {

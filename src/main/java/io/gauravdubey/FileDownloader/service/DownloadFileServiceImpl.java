@@ -87,9 +87,10 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         downloadResponse.setTotalFiles(downloadRequestLog.getDownloadFiles().size());
         success = failed = 0;
         for(DownloadFile df: downloadRequestLog.getDownloadFiles()){
-            if(df.getState() == Constants.COMPLETED)
+            if(df.getState() == Constants.STATES[Constants.COMPLETED])
                 success += 1;
-            else if(df.getState() == Constants.CANCELLED || df.getState() == Constants.FAILED)
+            else if(df.getState() == Constants.STATES[Constants.CANCELLED] ||
+                    df.getState() == Constants.STATES[Constants.FAILED])
                 failed +=1;
         }
         downloadResponse.setFailedDownloads(failed);
