@@ -2,6 +2,7 @@ package io.gauravdubey.FileDownloader.validationTest;
 
 import io.gauravdubey.FileDownloader.model.DownloadFile;
 import io.gauravdubey.FileDownloader.model.DownloadRequest;
+import io.gauravdubey.FileDownloader.model.DownloadRequestLog;
 import io.gauravdubey.FileDownloader.model.DownloadRequestValidator;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,6 +11,10 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -30,16 +35,42 @@ public class DownloadFileRequestValidationTest {
     }
 
     @Test
-    public void failsGivenAPostRequestWithoutATitle() {
-        DownloadFile target = new DownloadFile();
-        target.setSource(null);
+    public void passGivenCorrectDataSet() {
+        String s1 ="http://sample.download.file";
+        String s2 ="ftp://sample.download.file";
+        Set<String> downloadFilesSet = new HashSet<>();
+        downloadFilesSet.add(s1);
+        downloadFilesSet.add(s2);
+        DownloadRequest dr = new DownloadRequest();
+        dr.setDownloadFiles(downloadFilesSet);
+        Errors errors = new BeanPropertyBindingResult(dr, "downloadFile");
+        downloadRequestValidator.validate(dr, errors);
+        assertThat(errors.hasErrors(), is(false));
+    }
 
-        Errors errors = new BeanPropertyBindingResult(target, "downloadFile");
+    @Test
+    public void failsGivenAEmptyDownloadFile() {
+        Set<String> downloadFilesSet = new HashSet<>();
 
-        downloadRequestValidator.validate(target, errors);
-
+        DownloadRequest dr = new DownloadRequest();
+        dr.setDownloadFiles(downloadFilesSet);
+        Errors errors = new BeanPropertyBindingResult(dr, "downloadFile");
+        downloadRequestValidator.validate(dr, errors);
         assertThat(errors.hasErrors(), is(true));
-        assertThat(errors.getFieldError("source").getCode(), is("blank"));
+    }
+
+    @Test
+    public void failsGivenInCorrectUrls() {
+        String s1 ="http:";
+        String s2 ="sample.download.file";
+        Set<String> downloadFilesSet = new HashSet<>();
+        downloadFilesSet.add(s1);
+        downloadFilesSet.add(s2);
+        DownloadRequest dr = new DownloadRequest();
+        dr.setDownloadFiles(downloadFilesSet);
+        Errors errors = new BeanPropertyBindingResult(dr, "downloadFile");
+        downloadRequestValidator.validate(dr, errors);
+        assertThat(errors.hasErrors(), is(true));
     }
 
 }
