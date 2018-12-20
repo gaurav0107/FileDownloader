@@ -26,7 +26,7 @@ public abstract class DownloadTask implements Runnable {
 
 
     public void initDownload(){
-        this.mDownloadFile.setState(Constants.DOWNLOADING);
+        this.mDownloadFile.setState(Constants.STATES[Constants.DOWNLOADING]);
         this.mDownloadFile.setDownloadStartTime(System.nanoTime());
         updateDatabase();
     }
@@ -49,7 +49,7 @@ public abstract class DownloadTask implements Runnable {
             downloadFailed("Unable to move to Permanent Location");
         }else {
             logger.info("download Successful");
-            this.mDownloadFile.setState(Constants.COMPLETED);
+            this.mDownloadFile.setState(Constants.STATES[Constants.COMPLETED]);
             this.mDownloadFile.setFileSize(Utils.getFileSize(this.mDownloadFile.getFileName()));
         }
         endDownload();
@@ -62,13 +62,13 @@ public abstract class DownloadTask implements Runnable {
         } else
             logger.info("download failed");
 
-        this.mDownloadFile.setState(Constants.FAILED);
+        this.mDownloadFile.setState(Constants.STATES[Constants.FAILED]);
         endDownload();
     }
 
     public void downloadAborted(){
         logger.info("download Aborted");
-        this.mDownloadFile.setState(Constants.CANCELLED);
+        this.mDownloadFile.setState(Constants.STATES[Constants.CANCELLED]);
         this.mDownloadFile.setDownloadEndTime(System.nanoTime());
         updateDatabase();
 

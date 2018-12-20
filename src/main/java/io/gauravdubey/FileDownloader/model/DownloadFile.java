@@ -108,8 +108,8 @@ public class DownloadFile{
         return fileSize;
     }
 
-    public void setState(int state) {
-        this.state = Constants.STATES[state];
+    public void setState(String state) {
+        this.state = state;
     }
 
     public void setFileSize(long fileSize) {

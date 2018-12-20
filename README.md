@@ -49,9 +49,9 @@ If this is your first time using Github, review http://help.github.com to learn 
 mvn test
 ```
 
-##### Integration Test:
+##### Validation Tests:
 ```shell
-mvn test -Dtest=integrationTest
+mvn test -Dtest=validationTest
 ```
 
 #### Run Application
