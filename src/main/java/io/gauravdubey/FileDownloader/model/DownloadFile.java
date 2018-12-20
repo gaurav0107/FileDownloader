@@ -39,11 +39,10 @@ public class DownloadFile{
     @JsonBackReference
     private DownloadRequestLog downloadRequestLog;
 
-
     public DownloadFile() {
     }
 
-    public DownloadFile(DownloadRequestLog downloadRequestLog, String source){
+    public DownloadFile(String source) {
         this.source = source;
         if(source.contains("?")){
             this.params = source.substring(source.indexOf("?")+1);
@@ -59,11 +58,15 @@ public class DownloadFile{
         this.fileSize = -1;
         this.protocol = source.substring(0, source.indexOf(':'));
         this.destination = Constants.DEFAULT_STORAGE_LOCATION + "/" + this.fileName;
-        this.downloadRequestLog = downloadRequestLog;
         this.errorMessage = "";
         this.downloadStartTime =0;
         this.downloadEndTime = 0;
         this.downloadSpeed = (float) 0.0;
+    }
+
+    public DownloadFile(DownloadRequestLog downloadRequestLog, String source){
+        this(source);
+        this.downloadRequestLog = downloadRequestLog;
     }
 
     public Date getRequestTime() {

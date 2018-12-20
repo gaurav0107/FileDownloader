@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -43,12 +44,12 @@ public class DownloadFileController {
     @Autowired
     private MessageSource messageSource;
 
-/*
+
     @InitBinder
     protected void initBinder(WebDataBinder webDataBinder){
         webDataBinder.setValidator(downloadRequestValidator);
     }
-*/
+
 
     @GetMapping("downloadRequest")
     public ResponseEntity<List<DownloadResponse>> retrieveAllRequests() {
@@ -76,13 +77,13 @@ public class DownloadFileController {
             throw new InvalidResourceException(errors);
         }
 
-        DownloadResponse downloadResposne = downloadFileService.create(downloadRequest);
+        DownloadResponse downloadResponse = downloadFileService.create(downloadRequest);
 
-        URI uri = fromMethodCall(on(DownloadFileController.class).retrieveRequestById(downloadResposne.getRequestId()))
+        URI uri = fromMethodCall(on(DownloadFileController.class).retrieveRequestById(downloadResponse.getRequestId()))
                 .build()
                 .toUri();
 
-        return ResponseEntity.created(uri).body(downloadResposne);
+        return ResponseEntity.created(uri).body(downloadResponse);
 
     }
 
