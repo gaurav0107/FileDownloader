@@ -20,10 +20,9 @@ public class DownloadRequestLog {
     @Column(name = "request_id", columnDefinition = "uuid")
     private UUID requestId;
     private Date requestTime;
-    private int percentageFailure;
     private int totalFiles;
-    private int successfulDownloads;
-    private int failedDownloads;
+
+
 
     @OneToMany(mappedBy = "downloadRequestLog", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -31,9 +30,7 @@ public class DownloadRequestLog {
 
     public DownloadRequestLog() {
         requestTime = new Date();
-        this.percentageFailure = 0;
-        this.successfulDownloads = 0;
-        this.failedDownloads = 0;
+
     }
 
     public Date getRequestTime() {

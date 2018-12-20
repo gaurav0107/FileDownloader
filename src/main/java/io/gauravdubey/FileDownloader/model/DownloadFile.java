@@ -175,6 +175,7 @@ public class DownloadFile{
         this.downloadSpeed = downloadSpeed;
     }
 
+
     public void setDownloadRequestLog(DownloadRequestLog downloadRequestLog) {
         this.downloadRequestLog = downloadRequestLog;
     }
