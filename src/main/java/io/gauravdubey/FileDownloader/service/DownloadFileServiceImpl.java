@@ -42,7 +42,7 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         downloadRequestLog.setDownloadFiles(downloadFiles);
         downloadRequestLog = downloadRequestLogRepository.save(downloadRequestLog);
         downloadManager.createDownload(downloadRequestLog);
-        return createDownloadResposne(downloadRequestLog);
+        return createDownloadResponse(downloadRequestLog);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         if(! downloadRequestLog.isPresent())
             return Optional.empty();
         else {
-            return Optional.ofNullable(createDownloadResposne(downloadRequestLog.get()));
+            return Optional.ofNullable(createDownloadResponse(downloadRequestLog.get()));
         }
     }
 
@@ -60,7 +60,7 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         List<DownloadRequestLog> downloadRequestLogs = downloadRequestLogRepository.findAll();
         List<DownloadResponse> downloadResponses = new ArrayList<>();
         for (ListIterator<DownloadRequestLog> iter = downloadRequestLogs.listIterator(); iter.hasNext(); ) {
-            downloadResponses.add(createDownloadResposne(iter.next()));
+            downloadResponses.add(createDownloadResponse(iter.next()));
         }
         return downloadResponses;
     }
@@ -77,7 +77,7 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         return downloadRequestLogRepository.save(downloadRequestLog);
     }
 
-    public DownloadResponse createDownloadResposne(DownloadRequestLog downloadRequestLog){
+    public DownloadResponse createDownloadResponse(DownloadRequestLog downloadRequestLog){
         int success;
         int failed;
         DownloadResponse downloadResponse = new DownloadResponse();
@@ -87,10 +87,10 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         downloadResponse.setTotalFiles(downloadRequestLog.getDownloadFiles().size());
         success = failed = 0;
         for(DownloadFile df: downloadRequestLog.getDownloadFiles()){
-            if(df.getState() == Constants.STATES[Constants.COMPLETED])
+            if(df.getState().equals(Constants.STATES[Constants.COMPLETED]))
                 success += 1;
-            else if(df.getState() == Constants.STATES[Constants.CANCELLED] ||
-                    df.getState() == Constants.STATES[Constants.FAILED])
+            else if(df.getState().equals(Constants.STATES[Constants.CANCELLED]) ||
+                    df.getState().equals(Constants.STATES[Constants.FAILED]))
                 failed +=1;
         }
         downloadResponse.setFailedDownloads(failed);
