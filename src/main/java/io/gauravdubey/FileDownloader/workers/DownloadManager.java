@@ -30,7 +30,7 @@ public class DownloadManager {
 
     public DownloadManager() {}
 
-    public void createDownload(DownloadRequestLog downloadRequestLog){
+    public boolean createDownload(DownloadRequestLog downloadRequestLog){
         for(DownloadFile downloadFile: downloadRequestLog.getDownloadFiles()){
             DownloadTask downloadTask = null;
             switch (downloadFile.getProtocol()){
@@ -49,6 +49,7 @@ public class DownloadManager {
             }
             taskExecutor.execute(downloadTask);
         }
+        return true;
     }
 
 }
