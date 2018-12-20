@@ -2,8 +2,8 @@ package io.gauravdubey.FileDownloader.config;
 
 public class Constants {
 
-    public static final String DEFAULT_OUTPUT_FOLDER = "/tmp/";
-    public static final int DEFAULT_NUM_CONN_PER_DOWNLOAD = 8;
+    public static final int DEFAULT_CORE_POOL_SIZE = 4;
+    public static final int DEFAULT_MAX_POOL_SIZE = 8;
 
     public static final String STATES[] = {"Pending", "Downloading",
             "Paused", "Complete", "Cancelled", "Failed"};
@@ -19,17 +19,11 @@ public class Constants {
     public static final int FAILED = 5;
 
 
-
     public static final String HTTP = "http";
     public static final String HTTPS = "https";
     public static final String FTP = "ftp";
     public static final String SFTP = "sftp";
 
-
-    // Contants for block and buffer size
-    public static final int BLOCK_SIZE = 4096;
-    public static final int BUFFER_SIZE = 4096;
-    public static final int MIN_DOWNLOAD_SIZE = BLOCK_SIZE * 100;
 
 
     public static final int HTTP_CONN_TIMEOUT = 10000;
