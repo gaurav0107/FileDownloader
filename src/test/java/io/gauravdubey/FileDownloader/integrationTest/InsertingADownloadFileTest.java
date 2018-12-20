@@ -39,19 +39,19 @@ public class InsertingADownloadFileTest extends AbstractTransactionalJUnit4Sprin
 
     @Test
     public void savesThePostInTheDatabase() throws Exception {
-        int count = countRowsInTable("download_file");
+        int count  = countRowsInTable("download_request_log");
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/v1/downloadFile")
+        mvc.perform(MockMvcRequestBuilders.post("/api/v1/downloadRequest")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
-                .content("{\"source\": \"testing\"}"))
+                .content("{\"downloadFiles\": [\"http://sample.download.file\", \"sftp://sample.download.file\", " +
+                        "\"ftp://sample.download.file\"]}"))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-        count = countRowsInTable("download_file");
         System.out.println("new count is " + count);
-        assertThat(countRowsInTable("download_file"), is(count + 1));
+        assertThat(countRowsInTable("download_request_log"), is(count + 1));
     }
 
     /*

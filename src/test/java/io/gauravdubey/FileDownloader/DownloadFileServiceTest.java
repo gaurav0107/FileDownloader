@@ -21,9 +21,6 @@ import static org.hamcrest.Matchers.is;
 public class DownloadFileServiceTest {
 
     @Mock
-    DownloadFileRepository downloadFileRepository;
-
-    @Mock
     DownloadRequestLogRepository downloadRequestLogRepository;
 
     @InjectMocks

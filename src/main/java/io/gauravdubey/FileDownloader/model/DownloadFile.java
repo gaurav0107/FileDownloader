@@ -22,7 +22,7 @@ public class DownloadFile{
     private Date requestTime;
     private String url;
     private String source;
-    private int state;
+    private String state;
     private String fileName;
     private String protocol;
     private Date creationTime;
@@ -52,7 +52,7 @@ public class DownloadFile{
             this.url = source;
         }
         this.requestTime = new Date();
-        this.state = Constants.PENDING;
+        this.state = Constants.STATES[Constants.PENDING];
         this.fileName = source.substring(source.lastIndexOf('/') + 1,
                 source.contains("?")?source.indexOf("?"):source.length());
         this.fileSize = -1;
@@ -96,7 +96,7 @@ public class DownloadFile{
         modificationTime = new Date();
     }
 
-    public int getState() {
+    public String getState() {
         return state;
     }
 
@@ -109,7 +109,7 @@ public class DownloadFile{
     }
 
     public void setState(int state) {
-        this.state = state;
+        this.state = Constants.STATES[state];
     }
 
     public void setFileSize(long fileSize) {

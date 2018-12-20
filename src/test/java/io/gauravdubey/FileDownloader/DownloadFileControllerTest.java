@@ -4,8 +4,6 @@ package io.gauravdubey.FileDownloader;
 import io.gauravdubey.FileDownloader.controller.DownloadFileController;
 import io.gauravdubey.FileDownloader.model.*;
 import io.gauravdubey.FileDownloader.service.DownloadFileService;
-import org.hamcrest.Matchers;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
