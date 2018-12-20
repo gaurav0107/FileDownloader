@@ -1,7 +1,7 @@
 package io.gauravdubey.FileDownloader.service;
 
 
-import io.gauravdubey.FileDownloader.config.Constants;
+import io.gauravdubey.FileDownloader.config.Config;
 import io.gauravdubey.FileDownloader.errors.ResourceNotFoundException;
 import io.gauravdubey.FileDownloader.model.*;
 import io.gauravdubey.FileDownloader.workers.DownloadManager;
@@ -87,10 +87,10 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         downloadResponse.setTotalFiles(downloadRequestLog.getDownloadFiles().size());
         success = failed = 0;
         for(DownloadFile df: downloadRequestLog.getDownloadFiles()){
-            if(df.getState().equals(Constants.STATES[Constants.COMPLETED]))
+            if(df.getState().equals(Config.STATES[Config.COMPLETED]))
                 success += 1;
-            else if(df.getState().equals(Constants.STATES[Constants.CANCELLED]) ||
-                    df.getState().equals(Constants.STATES[Constants.FAILED]))
+            else if(df.getState().equals(Config.STATES[Config.CANCELLED]) ||
+                    df.getState().equals(Config.STATES[Config.FAILED]))
                 failed +=1;
         }
         downloadResponse.setFailedDownloads(failed);

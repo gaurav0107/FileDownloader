@@ -1,7 +1,7 @@
 package io.gauravdubey.FileDownloader.workers;
 
 import io.gauravdubey.FileDownloader.Utils;
-import io.gauravdubey.FileDownloader.config.Constants;
+import io.gauravdubey.FileDownloader.config.Config;
 import io.gauravdubey.FileDownloader.model.DownloadFile;
 import io.gauravdubey.FileDownloader.service.DownloadFileService;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public abstract class DownloadTask implements Runnable {
 
 
     public void initDownload(){
-        this.mDownloadFile.setState(Constants.STATES[Constants.DOWNLOADING]);
+        this.mDownloadFile.setState(Config.STATES[Config.DOWNLOADING]);
         this.mDownloadFile.setDownloadStartTime(System.nanoTime());
         updateDatabase();
     }
@@ -49,7 +49,7 @@ public abstract class DownloadTask implements Runnable {
             downloadFailed("Unable to move to Permanent Location");
         }else {
             logger.info("download Successful");
-            this.mDownloadFile.setState(Constants.STATES[Constants.COMPLETED]);
+            this.mDownloadFile.setState(Config.STATES[Config.COMPLETED]);
             this.mDownloadFile.setFileSize(Utils.getFileSize(this.mDownloadFile.getFileName()));
         }
         endDownload();
@@ -62,13 +62,13 @@ public abstract class DownloadTask implements Runnable {
         } else
             logger.info("download failed");
 
-        this.mDownloadFile.setState(Constants.STATES[Constants.FAILED]);
+        this.mDownloadFile.setState(Config.STATES[Config.FAILED]);
         endDownload();
     }
 
     public void downloadAborted(){
         logger.info("download Aborted");
-        this.mDownloadFile.setState(Constants.STATES[Constants.CANCELLED]);
+        this.mDownloadFile.setState(Config.STATES[Config.CANCELLED]);
         this.mDownloadFile.setDownloadEndTime(System.nanoTime());
         updateDatabase();
 

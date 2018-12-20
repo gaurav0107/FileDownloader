@@ -1,7 +1,7 @@
 package io.gauravdubey.FileDownloader.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import io.gauravdubey.FileDownloader.config.Constants;
+import io.gauravdubey.FileDownloader.config.Config;
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -52,12 +52,12 @@ public class DownloadFile{
             this.url = source;
         }
         this.requestTime = new Date();
-        this.state = Constants.STATES[Constants.PENDING];
+        this.state = Config.STATES[Config.PENDING];
         this.fileName = source.substring(source.lastIndexOf('/') + 1,
                 source.contains("?")?source.indexOf("?"):source.length());
         this.fileSize = -1;
         this.protocol = source.substring(0, source.indexOf(':'));
-        this.destination = Constants.DEFAULT_STORAGE_LOCATION + "/" + this.fileName;
+        this.destination = Config.DEFAULT_STORAGE_LOCATION + "/" + this.fileName;
         this.errorMessage = "";
         this.downloadStartTime =0;
         this.downloadEndTime = 0;

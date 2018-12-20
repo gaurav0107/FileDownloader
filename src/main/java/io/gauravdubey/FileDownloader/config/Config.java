@@ -1,6 +1,6 @@
 package io.gauravdubey.FileDownloader.config;
 
-public class Constants {
+public class Config {
 
     public static final int DEFAULT_CORE_POOL_SIZE = 4;
     public static final int DEFAULT_MAX_POOL_SIZE = 8;
@@ -24,9 +24,6 @@ public class Constants {
     public static final String FTP = "ftp";
     public static final String SFTP = "sftp";
 
-
-
-    public static final int HTTP_CONN_TIMEOUT = 10000;
     public static final String DEFAULT_TEMP_LOCATION = "/tmp/";
     public static final String DEFAULT_STORAGE_LOCATION = "storage";
 }

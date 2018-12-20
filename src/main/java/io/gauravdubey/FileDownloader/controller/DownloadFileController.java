@@ -11,6 +11,9 @@ import io.gauravdubey.FileDownloader.service.DownloadFileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +24,10 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -85,6 +91,36 @@ public class DownloadFileController {
 
         return ResponseEntity.created(uri).body(downloadResponse);
 
+    }
+
+    @GetMapping("getFile/{fileName}")
+    public ResponseEntity<Resource> getFile(@PathVariable String fileName){
+        String contentType = null;
+        Optional<Resource> resource = Optional.empty();
+        Path fileStorageLocation = Paths.get("storage");
+        Path filePath = fileStorageLocation.resolve(fileName).normalize();
+        System.out.println("gaurav path: " + filePath.toString());
+        Resource r = null;
+        try {
+            r = new UrlResource(filePath.toUri());
+        } catch (MalformedURLException e) {
+            System.out.println("not found 1");
+        }
+        if(r.exists()) {
+                resource = Optional.ofNullable(r);
+        } else {
+                System.out.println("not found 2");
+        }
+
+        if(!resource.isPresent()){
+            ResponseEntity.notFound().build();
+        }
+
+        contentType = "application/octet-stream";
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.get().getFilename() + "\"")
+                .body(resource.get());
     }
 
 
