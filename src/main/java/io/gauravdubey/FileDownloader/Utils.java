@@ -7,12 +7,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import io.gauravdubey.FileDownloader.config.Constants;
-import org.apache.commons.io.FileUtils;
+import io.gauravdubey.FileDownloader.config.Config;
 import org.slf4j.Logger;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -49,16 +47,16 @@ public class Utils {
     }
 
     public static String getTempDownloadLocation(String fileName){
-        return Constants.DEFAULT_TEMP_LOCATION + fileName;
+        return Config.DEFAULT_TEMP_LOCATION + fileName;
     }
 
     public static Boolean copyFileToPermanentLocation(String sourceFile, String fileName){
-        File directory = new File(Constants.DEFAULT_STORAGE_LOCATION);
+        File directory = new File(Config.DEFAULT_STORAGE_LOCATION);
         if (! directory.exists()){
             directory.mkdir();
         }
         try {
-            Files.copy(Paths.get(sourceFile), Paths.get(Constants.DEFAULT_STORAGE_LOCATION + "/" + fileName),
+            Files.copy(Paths.get(sourceFile), Paths.get(Config.DEFAULT_STORAGE_LOCATION + "/" + fileName),
                     StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,7 +67,7 @@ public class Utils {
 
     public static long getFileSize(String fileName) {
         try {
-            return Files.size(new File(Constants.DEFAULT_STORAGE_LOCATION + "/" + fileName).toPath());
+            return Files.size(new File(Config.DEFAULT_STORAGE_LOCATION + "/" + fileName).toPath());
         } catch (IOException e) {
             e.printStackTrace();
             return -1;

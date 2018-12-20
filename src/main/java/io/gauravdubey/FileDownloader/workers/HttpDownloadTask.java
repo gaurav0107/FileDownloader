@@ -1,13 +1,10 @@
 package io.gauravdubey.FileDownloader.workers;
 
 import io.gauravdubey.FileDownloader.Utils;
-import io.gauravdubey.FileDownloader.config.Constants;
 import io.gauravdubey.FileDownloader.model.DownloadFile;
-import io.gauravdubey.FileDownloader.service.DownloadFileService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
