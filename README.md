@@ -17,6 +17,10 @@ To get an User Interface this project can be clubbed with a
 These two has been kept separate to not enforce use of any specific User Interface.
 
 
+### Design
+TODO
+
+
 ## Getting Started
 
 #### Prerequisites
@@ -100,4 +104,3 @@ curl --location --request GET "https://gdfiledownloader.herokuapp.com/api/v1/dow
 
 curl --location --request GET "https://gdfiledownloader.herokuapp.com/api/v1/downloadRequest/ce9b4336-ee74-4a45-9720-70ecdef07e00"
 ```
-
